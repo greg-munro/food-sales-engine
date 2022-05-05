@@ -63,9 +63,10 @@ var session = enigma.create({
   url: 'wss://ec2-3-92-185-52.compute-1.amazonaws.com/anon/app/dcde8122-0c49-4cea-a935-d30145015cd6'
 });
 session.open().then(function (global) {
-  console.log(global);
   global.openDoc('dcde8122-0c49-4cea-a935-d30145015cd6').then(function (app) {
-    app.getField('Region').then(function (field) {});
+    app.getField('Region').then(function (field) {
+      console.log(field);
+    });
     var def = {
       qinfo: {
         qType: 'this can be whatever I put'
@@ -87,6 +88,33 @@ session.open().then(function (global) {
       var f = new Filter('filter1', {
         model: model
       });
+    });
+    var def2 = {
+      qInfo: {
+        qType: 'myObject'
+      },
+      qHyperCubeDef: {
+        qDimensions: [{
+          qDef: {
+            qFieldDefs: ['Product']
+          }
+        }],
+        qMeasures: [{
+          qDef: {
+            qDef: 'Sum(TotalPrice)',
+            qLabel: 'Sales'
+          }
+        }],
+        qInitialDataFetch: [{
+          qTop: 0,
+          qLeft: 0,
+          qWidth: 2,
+          qHeight: 8000
+        }]
+      }
+    };
+    app.createSessionObject(def2).then(function (model) {
+      console.log('model', model);
     });
   });
 });
