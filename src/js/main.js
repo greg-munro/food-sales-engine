@@ -45,12 +45,26 @@ session.open().then(global => {
           { qDef: { qDef: 'Sum(TotalPrice)', qLabel: 'Sales' } }
         ],
         qInitialDataFetch: [
-          { qTop: 0, qLeft: 0, qWidth: 2, qHeight: 8000 }
-        ]
+          { qTop: 0,
+            qLeft: 0,
+            qWidth: 2, 
+            qHeight: 8000 
+          }]
       }
     }
     app.createSessionObject(def2).then(model => {
-      console.log('model', model)
+      model.getLayout().then(layout => {
+        console.log(layout)
+      })
+      const pageDefs = [{
+        qTop: 50,
+        qLeft: 0,
+        qWidth: 2,
+        qHeight: 50
+      }]
+      model.getHyperCubeData('/qHyperCubeDef', pageDefs).then(pages => {
+        console.log('pages', pages)
+      })
     })
   })
 })

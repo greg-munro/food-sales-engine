@@ -25,7 +25,6 @@ class Filter {
 
   render () {
     this.options.model.getLayout().then(layout => {
-      console.log(layout)
       let html = layout.qListObject.qDataPages[0].qMatrix.map(row => 
         `<li data-elem="${row[0].qElemNumber}" class='list-item state-${row[0].qState}'>${row[0].qText}</li>`).join('')
       const el = document.getElementById(`${this.elementId}_list`)

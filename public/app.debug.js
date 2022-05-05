@@ -26,7 +26,6 @@ class Filter {
 
   render () {
     this.options.model.getLayout().then(layout => {
-      console.log(layout)
       let html = layout.qListObject.qDataPages[0].qMatrix.map(row => 
         `<li data-elem="${row[0].qElemNumber}" class='list-item state-${row[0].qState}'>${row[0].qText}</li>`).join('')
       const el = document.getElementById(`${this.elementId}_list`)
@@ -82,12 +81,26 @@ session.open().then(global => {
           { qDef: { qDef: 'Sum(TotalPrice)', qLabel: 'Sales' } }
         ],
         qInitialDataFetch: [
-          { qTop: 0, qLeft: 0, qWidth: 2, qHeight: 8000 }
-        ]
+          { qTop: 0,
+            qLeft: 0,
+            qWidth: 2, 
+            qHeight: 8000 
+          }]
       }
     }
     app.createSessionObject(def2).then(model => {
-      console.log('model', model)
+      model.getLayout().then(layout => {
+        console.log(layout)
+      })
+      const pageDefs = [{
+        qTop: 50,
+        qLeft: 0,
+        qWidth: 2,
+        qHeight: 50
+      }]
+      model.getHyperCubeData('/qHyperCubeDef', pageDefs).then(pages => {
+        console.log('pages', pages)
+      })
     })
   })
 })

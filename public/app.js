@@ -42,7 +42,6 @@ var Filter = /*#__PURE__*/function () {
       var _this = this;
 
       this.options.model.getLayout().then(function (layout) {
-        console.log(layout);
         var html = layout.qListObject.qDataPages[0].qMatrix.map(function (row) {
           return "<li data-elem=\"".concat(row[0].qElemNumber, "\" class='list-item state-").concat(row[0].qState, "'>").concat(row[0].qText, "</li>");
         }).join('');
@@ -114,7 +113,18 @@ session.open().then(function (global) {
       }
     };
     app.createSessionObject(def2).then(function (model) {
-      console.log('model', model);
+      model.getLayout().then(function (layout) {
+        console.log(layout);
+      });
+      var pageDefs = [{
+        qTop: 50,
+        qLeft: 0,
+        qWidth: 2,
+        qHeight: 50
+      }];
+      model.getHyperCubeData('/qHyperCubeDef', pageDefs).then(function (pages) {
+        console.log('pages', pages);
+      });
     });
   });
 });
