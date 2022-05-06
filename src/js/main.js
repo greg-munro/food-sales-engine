@@ -49,13 +49,13 @@ session.open().then(global => {
           { qTop: 0,
             qLeft: 0,
             qWidth: 2, 
-            qHeight: 5000
+            qHeight: 10
           }]
       }
     }
     app.createSessionObject(def2).then(model => {
       const hyperCubeTest = new Hypercube('filter2', { model })
-      console.log('model', model)
+      console.log(hyperCubeTest)
       // model.getHyperCubeData('/qHyperCubeDef')
     })
   })

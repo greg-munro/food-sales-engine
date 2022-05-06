@@ -159,7 +159,7 @@ session.open().then(function (global) {
           qTop: 0,
           qLeft: 0,
           qWidth: 2,
-          qHeight: 5000
+          qHeight: 10
         }]
       }
     };
@@ -167,7 +167,7 @@ session.open().then(function (global) {
       var hyperCubeTest = new Hypercube('filter2', {
         model: model
       });
-      console.log('model', model); // model.getHyperCubeData('/qHyperCubeDef')
+      console.log(hyperCubeTest); // model.getHyperCubeData('/qHyperCubeDef')
     });
   });
 });
