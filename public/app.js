@@ -67,7 +67,7 @@ var Hypercube = /*#__PURE__*/function () {
     var el = document.getElementById(this.elementId);
 
     if (el) {
-      // el.addEventListener('click', this.handleClick.bind(this))
+      el.addEventListener('click', this.handleClick.bind(this));
       el.innerHTML = "<table id='".concat(this.elementId, "_table'></table>");
       this.options.model.on('changed', this.render.bind(this));
       this.render();
@@ -77,6 +77,14 @@ var Hypercube = /*#__PURE__*/function () {
   }
 
   _createClass(Hypercube, [{
+    key: "handleClick",
+    value: function handleClick(event) {
+      if (event.target.classList.contains('table-row')) {
+        this.options.model.selectHyperCubeValues('/qHyperCubeDef ', 0, [1], true);
+        console.log(event);
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
@@ -86,7 +94,7 @@ var Hypercube = /*#__PURE__*/function () {
         layout.qHyperCube.qDataPages[0].qMatrix.forEach(function (row) {
           html += '<tr>';
           html += row.map(function (cell) {
-            return "<td> ".concat(cell.qText, " </td>");
+            return "<td class=\"table-row\">".concat(cell.qText, "</td>");
           }).join('');
           html += '</tr>';
         });

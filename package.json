@@ -41,6 +41,7 @@
     "grunt-includes": "^0.5.4",
     "grunt-minify-html": "^3.0.0",
     "grunt-stylelint": "^0.10.0",
+    "nodemon": "^2.0.16",
     "stylelint": "^9.4.0"
   }
 }

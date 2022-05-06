@@ -43,7 +43,7 @@ class Hypercube {
     this.options = Object.assign({}, options)
     const el = document.getElementById(this.elementId)
     if (el) {
-      // el.addEventListener('click', this.handleClick.bind(this))
+      el.addEventListener('click', this.handleClick.bind(this))
       el.innerHTML = `<table id='${this.elementId}_table'></table>`
       this.options.model.on('changed', this.render.bind(this))
       this.render()
@@ -52,12 +52,20 @@ class Hypercube {
       console.error(`no element found with id - ${this.elementId}`)
     }
   }
+  
+  handleClick (event) {
+    if (event.target.classList.contains('table-row')) {
+      this.options.model.selectHyperCubeValues('/qHyperCubeDef ', 0, [1], true)
+      console.log(event)
+    }
+  }
+
   render () {
     this.options.model.getLayout().then(layout => {
       let html = ''
       layout.qHyperCube.qDataPages[0].qMatrix.forEach(row => {
         html += '<tr>'
-        html += row.map(cell => `<td> ${cell.qText} </td>`).join('')
+        html += row.map(cell => `<td class="table-row">${cell.qText}</td>`).join('')
         html += '</tr>'
       })
       const el = document.getElementById(`${this.elementId}_table`)
