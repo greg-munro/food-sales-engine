@@ -1,4 +1,4 @@
-/* global enigma schema Filter include */ 
+/* global enigma schema Filter include Hypercube */ 
 class Filter {
   constructor (elementId, options) {
     const DEFAULT = {}
@@ -36,6 +36,38 @@ class Filter {
   }
 }
 
+class Hypercube {
+  constructor (elementId, options) {
+    const DEFAULT = {}
+    this.elementId = elementId
+    this.options = Object.assign({}, options)
+    const el = document.getElementById(this.elementId)
+    if (el) {
+      // el.addEventListener('click', this.handleClick.bind(this))
+      el.innerHTML = `<table id='${this.elementId}_table'></table>`
+      this.options.model.on('changed', this.render.bind(this))
+      this.render()
+    }
+    else {
+      console.error(`no element found with id - ${this.elementId}`)
+    }
+  }
+  render () {
+    this.options.model.getLayout().then(layout => {
+      let html = ''
+      layout.qHyperCube.qDataPages[0].qMatrix.forEach(row => {
+        html += '<tr>'
+        html += row.map(cell => `<td> ${cell.qText} </td>`).join('')
+        html += '</tr>'
+      })
+      const el = document.getElementById(`${this.elementId}_table`)
+      if (el) {
+        el.innerHTML = html
+      }
+    })
+  }
+}
+
 
 const session = enigma.create({
   schema,
@@ -45,7 +77,7 @@ const session = enigma.create({
 session.open().then(global => {
   global.openDoc('dcde8122-0c49-4cea-a935-d30145015cd6').then(app => {
     app.getField('Region').then(field => {
-      console.log(field)
+
     })
     const def = {
       qinfo: {
@@ -84,23 +116,14 @@ session.open().then(global => {
           { qTop: 0,
             qLeft: 0,
             qWidth: 2, 
-            qHeight: 8000 
+            qHeight: 5000
           }]
       }
     }
     app.createSessionObject(def2).then(model => {
-      model.getLayout().then(layout => {
-        console.log(layout)
-      })
-      const pageDefs = [{
-        qTop: 50,
-        qLeft: 0,
-        qWidth: 2,
-        qHeight: 50
-      }]
-      model.getHyperCubeData('/qHyperCubeDef', pageDefs).then(pages => {
-        console.log('pages', pages)
-      })
+      const hyperCubeTest = new Hypercube('filter2', { model })
+      console.log('model', model)
+      // model.getHyperCubeData('/qHyperCubeDef')
     })
   })
 })

@@ -1,5 +1,6 @@
-/* global enigma schema Filter include */ 
+/* global enigma schema Filter include Hypercube */ 
 include('./filter.js')
+include('./hypercubeFilter.js')
 
 const session = enigma.create({
   schema,
@@ -9,7 +10,7 @@ const session = enigma.create({
 session.open().then(global => {
   global.openDoc('dcde8122-0c49-4cea-a935-d30145015cd6').then(app => {
     app.getField('Region').then(field => {
-      console.log(field)
+
     })
     const def = {
       qinfo: {
@@ -48,23 +49,14 @@ session.open().then(global => {
           { qTop: 0,
             qLeft: 0,
             qWidth: 2, 
-            qHeight: 8000 
+            qHeight: 5000
           }]
       }
     }
     app.createSessionObject(def2).then(model => {
-      model.getLayout().then(layout => {
-        console.log(layout)
-      })
-      const pageDefs = [{
-        qTop: 50,
-        qLeft: 0,
-        qWidth: 2,
-        qHeight: 50
-      }]
-      model.getHyperCubeData('/qHyperCubeDef', pageDefs).then(pages => {
-        console.log('pages', pages)
-      })
+      const hyperCubeTest = new Hypercube('filter2', { model })
+      console.log('model', model)
+      // model.getHyperCubeData('/qHyperCubeDef')
     })
   })
 })

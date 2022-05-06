@@ -8,7 +8,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-/* global enigma schema Filter include */
+/* global enigma schema Filter include Hypercube */
 var Filter = /*#__PURE__*/function () {
   function Filter(elementId, options) {
     _classCallCheck(this, Filter);
@@ -57,15 +57,58 @@ var Filter = /*#__PURE__*/function () {
   return Filter;
 }();
 
+var Hypercube = /*#__PURE__*/function () {
+  function Hypercube(elementId, options) {
+    _classCallCheck(this, Hypercube);
+
+    var DEFAULT = {};
+    this.elementId = elementId;
+    this.options = _extends({}, options);
+    var el = document.getElementById(this.elementId);
+
+    if (el) {
+      // el.addEventListener('click', this.handleClick.bind(this))
+      el.innerHTML = "<table id='".concat(this.elementId, "_table'></table>");
+      this.options.model.on('changed', this.render.bind(this));
+      this.render();
+    } else {
+      console.error("no element found with id - ".concat(this.elementId));
+    }
+  }
+
+  _createClass(Hypercube, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      this.options.model.getLayout().then(function (layout) {
+        var html = '';
+        layout.qHyperCube.qDataPages[0].qMatrix.forEach(function (row) {
+          html += '<tr>';
+          html += row.map(function (cell) {
+            return "<td> ".concat(cell.qText, " </td>");
+          }).join('');
+          html += '</tr>';
+        });
+        var el = document.getElementById("".concat(_this2.elementId, "_table"));
+
+        if (el) {
+          el.innerHTML = html;
+        }
+      });
+    }
+  }]);
+
+  return Hypercube;
+}();
+
 var session = enigma.create({
   schema: schema,
   url: 'wss://ec2-3-92-185-52.compute-1.amazonaws.com/anon/app/dcde8122-0c49-4cea-a935-d30145015cd6'
 });
 session.open().then(function (global) {
   global.openDoc('dcde8122-0c49-4cea-a935-d30145015cd6').then(function (app) {
-    app.getField('Region').then(function (field) {
-      console.log(field);
-    });
+    app.getField('Region').then(function (field) {});
     var def = {
       qinfo: {
         qType: 'this can be whatever I put'
@@ -108,23 +151,15 @@ session.open().then(function (global) {
           qTop: 0,
           qLeft: 0,
           qWidth: 2,
-          qHeight: 8000
+          qHeight: 5000
         }]
       }
     };
     app.createSessionObject(def2).then(function (model) {
-      model.getLayout().then(function (layout) {
-        console.log(layout);
+      var hyperCubeTest = new Hypercube('filter2', {
+        model: model
       });
-      var pageDefs = [{
-        qTop: 50,
-        qLeft: 0,
-        qWidth: 2,
-        qHeight: 50
-      }];
-      model.getHyperCubeData('/qHyperCubeDef', pageDefs).then(function (pages) {
-        console.log('pages', pages);
-      });
+      console.log('model', model); // model.getHyperCubeData('/qHyperCubeDef')
     });
   });
 });
