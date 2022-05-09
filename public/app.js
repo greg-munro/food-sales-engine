@@ -8,7 +8,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-/* global enigma schema Filter include Hypercube */
+/* global enigma schema Filter include Hypercube Test */
 var Filter = /*#__PURE__*/function () {
   function Filter(elementId, options) {
     _classCallCheck(this, Filter);
@@ -114,22 +114,68 @@ var Hypercube = /*#__PURE__*/function () {
 /* global Chart */
 
 
-var labels = ['Carrot', 'Whole Wheat', 'Chocolate Chip', 'Arrowroot', 'Potato Chips', 'Oatmeal Raisin', 'Bran', 'Pretzels', 'Banana'];
-var data = {
-  labels: labels,
-  datasets: [{
-    label: 'Food Sales USA 2020-2021',
-    backgroundColor: '#29AAF2',
-    borderColor: 'rgb(255, 99, 132)',
-    data: [7410.99, 3393.93, 4752.15]
-  }]
-};
-var config = {
-  type: 'bar',
-  data: data,
-  options: {}
-};
-var myChart = new Chart(document.getElementById('myChart'), config);
+var Test = /*#__PURE__*/function () {
+  function Test(elementId, options) {
+    _classCallCheck(this, Test);
+
+    var DEFAULT = {};
+    this.elementId = elementId;
+    this.options = _extends({}, options);
+    var el = document.getElementById(this.elementId);
+
+    if (el) {
+      el.addEventListener('click', this.handleClick.bind(this));
+      this.options.model.on('changed', this.render.bind(this));
+      var config = {
+        type: 'bar',
+        options: {}
+      };
+      this.myChart = new Chart(document.getElementById(this.elementId), config);
+      this.render();
+    } else {
+      console.error("no element found with id - ".concat(this.elementId));
+    }
+  }
+
+  _createClass(Test, [{
+    key: "handleClick",
+    value: function handleClick(event) {
+      if (event.target.classList.contains('table-row')) {
+        var elemNumber = event.target.getAttribute('data-elem');
+        this.options.model.selectHyperCubeValues('/qHyperCubeDef', 0, [+elemNumber], true).then(function (res) {}, function (error) {
+          console.log(error, 'error');
+        });
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      this.options.model.getLayout().then(function (layout) {
+        var data = {
+          labels: [],
+          datasets: [{
+            label: 'Food Sales USA 2020-2021',
+            backgroundColor: '#29AAF2',
+            borderColor: 'rgb(255, 99, 132)',
+            data: []
+          }]
+        };
+        layout.qHyperCube.qDataPages[0].qMatrix.forEach(function (row) {
+          data.labels.push(row[0].qText);
+          data.datasets[0].data.push(row[1].qNum);
+        });
+        _this3.myChart.data = data;
+
+        _this3.myChart.update();
+      });
+    }
+  }]);
+
+  return Test;
+}();
+
 var session = enigma.create({
   schema: schema,
   url: 'wss://ec2-3-92-185-52.compute-1.amazonaws.com/anon/app/dcde8122-0c49-4cea-a935-d30145015cd6'
@@ -185,6 +231,9 @@ session.open().then(function (global) {
     };
     app.createSessionObject(def2).then(function (model) {
       var hyperCubeTest = new Hypercube('filter2', {
+        model: model
+      });
+      var Test1 = new Test('myChart', {
         model: model
       });
     });

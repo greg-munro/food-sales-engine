@@ -1,4 +1,4 @@
-/* global enigma schema Filter include Hypercube */ 
+/* global enigma schema Filter include Hypercube Test */ 
 include('./filter.js')
 include('./hypercubeFilter.js')
 include('./myChart.js')
@@ -56,6 +56,7 @@ session.open().then(global => {
     }
     app.createSessionObject(def2).then(model => {
       const hyperCubeTest = new Hypercube('filter2', { model })
+      const Test1 = new Test('myChart', { model })
     })
   })
 })
