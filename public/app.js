@@ -80,8 +80,10 @@ var Hypercube = /*#__PURE__*/function () {
     key: "handleClick",
     value: function handleClick(event) {
       if (event.target.classList.contains('table-row')) {
-        this.options.model.selectHyperCubeValues('/qHyperCubeDef ', 0, [1], true);
-        console.log(event);
+        var elemNumber = event.target.getAttribute('data-elem');
+        this.options.model.selectHyperCubeValues('/qHyperCubeDef', 0, [+elemNumber], true).then(function (res) {}, function (error) {
+          console.log(error, 'error');
+        });
       }
     }
   }, {
@@ -94,7 +96,7 @@ var Hypercube = /*#__PURE__*/function () {
         layout.qHyperCube.qDataPages[0].qMatrix.forEach(function (row) {
           html += '<tr>';
           html += row.map(function (cell) {
-            return "<td class=\"table-row\">".concat(cell.qText, "</td>");
+            return "<td data-elem=\"".concat(cell.qElemNumber, "\"class=\"table-row\">").concat(cell.qText, "</td>");
           }).join('');
           html += '</tr>';
         });

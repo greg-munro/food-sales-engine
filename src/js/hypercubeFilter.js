@@ -6,7 +6,7 @@ class Hypercube {
     const el = document.getElementById(this.elementId)
     if (el) {
       el.addEventListener('click', this.handleClick.bind(this))
-      el.innerHTML = `<table id='${this.elementId}_table'></table>`
+      el.innerHTML = `<table id='${this.elementId}_table'></table>` 
       this.options.model.on('changed', this.render.bind(this))
       this.render()
     }
@@ -17,8 +17,9 @@ class Hypercube {
   
   handleClick (event) {
     if (event.target.classList.contains('table-row')) {
-      this.options.model.selectHyperCubeValues('/qHyperCubeDef ', 0, [1], true)
-      console.log(event)
+      const elemNumber = event.target.getAttribute('data-elem')
+      this.options.model.selectHyperCubeValues('/qHyperCubeDef', 0, [+elemNumber], true)
+        .then(res => {}, error => { console.log(error, 'error') })
     }
   }
 
@@ -27,7 +28,7 @@ class Hypercube {
       let html = ''
       layout.qHyperCube.qDataPages[0].qMatrix.forEach(row => {
         html += '<tr>'
-        html += row.map(cell => `<td class="table-row">${cell.qText}</td>`).join('')
+        html += row.map(cell => `<td data-elem="${cell.qElemNumber}"class="table-row">${cell.qText}</td>`).join('')
         html += '</tr>'
       })
       const el = document.getElementById(`${this.elementId}_table`)
