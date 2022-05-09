@@ -187,7 +187,6 @@ session.open().then(function (global) {
       var hyperCubeTest = new Hypercube('filter2', {
         model: model
       });
-      console.log(hyperCubeTest); // model.getHyperCubeData('/qHyperCubeDef')
     });
   });
 });

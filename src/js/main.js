@@ -56,8 +56,6 @@ session.open().then(global => {
     }
     app.createSessionObject(def2).then(model => {
       const hyperCubeTest = new Hypercube('filter2', { model })
-      console.log(hyperCubeTest)
-      // model.getHyperCubeData('/qHyperCubeDef')
     })
   })
 })
