@@ -1,6 +1,7 @@
 /* global enigma schema Filter include Hypercube */ 
 include('./filter.js')
 include('./hypercubeFilter.js')
+include('./myChart.js')
 
 const session = enigma.create({
   schema,

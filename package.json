@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/WebsyIO/basic-express-server#readme",
   "dependencies": {
+    "chart.js": "^3.7.1",
     "enigma.js": "^2.9.0",
     "express": "^4.17.1"
   },

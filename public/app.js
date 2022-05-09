@@ -111,7 +111,25 @@ var Hypercube = /*#__PURE__*/function () {
 
   return Hypercube;
 }();
+/* global Chart */
 
+
+var labels = ['Carrot', 'Whole Wheat', 'Chocolate Chip', 'Arrowroot', 'Potato Chips', 'Oatmeal Raisin', 'Bran', 'Pretzels', 'Banana'];
+var data = {
+  labels: labels,
+  datasets: [{
+    label: 'Food Sales USA 2020-2021',
+    backgroundColor: '#29AAF2',
+    borderColor: 'rgb(255, 99, 132)',
+    data: [7410.99, 3393.93, 4752.15]
+  }]
+};
+var config = {
+  type: 'bar',
+  data: data,
+  options: {}
+};
+var myChart = new Chart(document.getElementById('myChart'), config);
 var session = enigma.create({
   schema: schema,
   url: 'wss://ec2-3-92-185-52.compute-1.amazonaws.com/anon/app/dcde8122-0c49-4cea-a935-d30145015cd6'
