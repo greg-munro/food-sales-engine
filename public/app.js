@@ -157,11 +157,13 @@ var Test = /*#__PURE__*/function () {
           labels: [],
           datasets: [{
             label: 'Food Sales USA 2020-2021',
-            backgroundColor: '#29AAF2',
+            backgroundColor: '#066F46',
             borderColor: 'rgb(255, 99, 132)',
             data: []
           }]
         };
+        console.log(layout.qHyperCube.qDataPages[0].qMatrix);
+        console.log(layout);
         layout.qHyperCube.qDataPages[0].qMatrix.forEach(function (row) {
           data.labels.push(row[0].qText);
           data.datasets[0].data.push(row[1].qNum);
